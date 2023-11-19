@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../beers.xsd">
+    <Beer>
+        <Name>Stout</Name>
+        <Type>Dark</Type>
+        <Alcoholic>true</Alcoholic>
+        <Manufacturer>Example Brewery</Manufacturer>
+        <Ingredients>
+            <Ingredient>Water</Ingredient>
+            <Ingredient>Malt</Ingredient>
+            <Ingredient>Hops</Ingredient>
+        </Ingredients>
+        <Chars>
+            <Char>
+                <Turnover>3000</Turnover>
+                <Transparency>80</Transparency>
+                <Filtered>true</Filtered>
+                <Calories>200</Calories>
+                <Dispensing>
+                    <Volume>500</Volume>
+                    <Material>Glass</Material>
+                </Dispensing>
+            </Char>
+        </Chars>
+    </Beer>
+    <Beer>
+        <Name>IPA</Name>
+        <Type>India Pale Ale</Type>
+        <Alcoholic>true</Alcoholic>
+        <Manufacturer>Another Brewery</Manufacturer>
+        <Ingredients>
+            <Ingredient>Water</Ingredient>
+            <Ingredient>Malt</Ingredient>
+            <Ingredient>Hops</Ingredient>
+        </Ingredients>
+        <Chars>
+            <Char>
+                <Turnover>4000</Turnover>
+                <Transparency>75</Transparency>
+                <Filtered>true</Filtered>
+                <Calories>220</Calories>
+                <Dispensing>
+                    <Volume>330</Volume>
+                    <Material>Bottle</Material>
+                </Dispensing>
+            </Char>
+        </Chars>
+    </Beer>
+    <Beer>
+        <Name>Pilsner</Name>
+        <Type>Light</Type>
+        <Alcoholic>true</Alcoholic>
+        <Manufacturer>Yet Another Brewery</Manufacturer>
+        <Ingredients>
+            <Ingredient>Water</Ingredient>
+            <Ingredient>Malt</Ingredient>
+            <Ingredient>Hops</Ingredient>
+        </Ingredients>
+        <Chars>
+            <Char>
+                <Turnover>3500</Turnover>
+                <Transparency>85</Transparency>
+                <Filtered>true</Filtered>
+                <Calories>180</Calories>
+                <Dispensing>
+                    <Volume>500</Volume>
+                    <Material>Can</Material>
+                </Dispensing>
+            </Char>
+        </Chars>
+    </Beer>
+</Beers>

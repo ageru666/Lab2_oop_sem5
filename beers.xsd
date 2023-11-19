@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="Beers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Beer" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name" type="xs:string"/>
+                            <xs:element name="Type" type="xs:string"/>
+                            <xs:element name="Alcoholic" type="xs:boolean"/>
+                            <xs:element name="Manufacturer" type="xs:string"/>
+                            <xs:element name="Ingredients">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Ingredient" type="xs:string" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Chars">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Char" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Turnover" type="xs:integer"/>
+                                                    <xs:element name="Transparency" type="xs:integer"/>
+                                                    <xs:element name="Filtered" type="xs:boolean"/>
+                                                    <xs:element name="Calories" type="xs:integer"/>
+                                                    <xs:element name="Dispensing">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="Volume" type="xs:integer"/>
+                                                                <xs:element name="Material" type="xs:string"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
