@@ -1,9 +1,12 @@
 package tests;
+
 import Parsers.SAXParser;
 import Components.Beer;
-import Components.BeerChar;
 import Components.Beers;
+import Components.BeerChar;
+import Parsers.UniversalXMLHandler;
 import org.junit.jupiter.api.Test;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -12,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BeerParserTest {
 
     @Test
-    public void parseBeerXmlTest() {
-        InputStream xmlInput = getClass().getResourceAsStream("/beers.xml");
-
-        Beers beers = SAXParser.parseBeerXml(xmlInput);
+    public void parseBeerXmlTest() throws Exception {
+        UniversalXMLHandler universalHandler = new UniversalXMLHandler();
+        SAXParser saxParser = new SAXParser(universalHandler);
+        Beers beers = saxParser.parseBeerXml("src//beers.xml");
         List<Beer> beerList = beers.getBeer();
 
         assertEquals(3, beerList.size());

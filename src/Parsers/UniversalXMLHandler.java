@@ -3,15 +3,15 @@ package Parsers;
 import Components.Beer;
 import Components.BeerChar;
 import Components.Beers;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeerStAXHandler extends DefaultHandler {
+public class UniversalXMLHandler extends DefaultHandler {
 
     private Beers beers;
     private Beer currentBeer;
@@ -19,30 +19,78 @@ public class BeerStAXHandler extends DefaultHandler {
     private List<String> currentIngredients;
     private String currentText;
 
-    public Beers parseXML(XMLStreamReader reader) throws XMLStreamException {
-        while (reader.hasNext()) {
-            int event = reader.next();
+    private boolean insideIngredients = false;
 
-            switch (event) {
-                case XMLStreamConstants.START_ELEMENT:
-                    handleStartElement(reader.getLocalName());
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    handleCharacters(reader.getText());
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    handleEndElement(reader.getLocalName());
-                    break;
-            }
-        }
+    // Constructors
 
+    public UniversalXMLHandler() {
+        reset();
+    }
+
+    // Public methods
+
+    public Beers getBeers() {
         return beers;
     }
 
-    private void handleStartElement(String elementName) {
+    // Overridden methods for SAX parser
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        handleStartElement(qName);
+
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        handleCharacters(new String(ch, start, length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        handleEndElement(qName);
+    }
+
+    // Methods for StAX parser
+
+    public void handleStAXStartElement(String elementName) {
+        handleStartElement(elementName);
+    }
+
+    public void handleStAXCharacters(String text) {
+        handleCharacters(text);
+    }
+
+    public void handleStAXEndElement(String endElementName) {
+        handleEndElement(endElementName);
+    }
+
+    // Methods for DOM parser
+
+    public void handleDOMStartElement(String elementName) {
+        handleStartElement(elementName);
+    }
+
+    public void handleDOMCharacters(String text) {
+        handleCharacters(text);
+    }
+
+    public void handleDOMEndElement(String endElementName) {
+        handleEndElement(endElementName);
+    }
+
+    // Private methods
+
+    void reset() {
+        beers = new Beers(new ArrayList<>());
+        currentBeer = null;
+        currentIngredients = null;
+    }
+
+    void handleStartElement(String elementName) {
         switch (elementName) {
             case "Beers":
-                beers = new Beers(new ArrayList<>());
+                reset();
                 break;
             case "Beer":
                 currentBeer = new Beer();
@@ -54,11 +102,11 @@ public class BeerStAXHandler extends DefaultHandler {
         }
     }
 
-    private void handleCharacters(String text) {
+    void handleCharacters(String text) {
         currentText = text.trim();
     }
 
-    private void handleEndElement(String endElementName) throws XMLStreamException {
+    void handleEndElement(String endElementName) {
         switch (endElementName) {
             case "Name":
                 currentBeer.setName(currentText);
@@ -99,7 +147,10 @@ public class BeerStAXHandler extends DefaultHandler {
             case "Beer":
                 currentBeer.setIngredients(currentIngredients);
                 beers.getBeer().add(currentBeer);
+                currentBeer = null;
+                currentIngredients = null;
                 break;
         }
     }
+
 }

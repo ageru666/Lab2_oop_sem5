@@ -1,8 +1,9 @@
 package tests;
-import Parsers.BeerDOMParser;
+import Parsers.DOMParser;
 import Components.Beer;
 import Components.BeerChar;
 import Components.Beers;
+import Parsers.UniversalXMLHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -17,8 +18,9 @@ public class BeerDOMParserTest {
     public void parseXMLTest() throws Exception {
 
         InputStream xmlInput = getClass().getResourceAsStream("/beers.xml");
-
-        Beers beers = BeerDOMParser.parseXML(xmlInput);
+        UniversalXMLHandler universalHandler = new UniversalXMLHandler();
+        DOMParser domParser = new DOMParser(universalHandler);
+        Beers beers = domParser.parse(xmlInput);
         List<Beer> beerList = beers.getBeer();
 
         assertEquals(3, beerList.size());

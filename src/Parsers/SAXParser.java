@@ -1,42 +1,46 @@
 package Parsers;
 
 import Components.Beers;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.SAXParserFactory;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class SAXParser {
+public class SAXParser extends DefaultHandler {
 
-    public static Beers parseBeerXml(InputStream xmlInput) {
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            javax.xml.parsers.SAXParser saxParser = factory.newSAXParser();
+    private UniversalXMLHandler handler;
 
-            BeerSAXHandler handler = new BeerSAXHandler();
-            saxParser.parse(xmlInput, handler);
-
-            return handler.getBeers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public SAXParser(UniversalXMLHandler handler) {
+        this.handler = handler;
     }
-    public static Beers parseBeerXml(String path) {
-        try {
-            InputStream xmlInput = new FileInputStream(path);
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            javax.xml.parsers.SAXParser saxParser = factory.newSAXParser();
 
-            BeerSAXHandler handler = new BeerSAXHandler();
-            saxParser.parse(xmlInput, handler);
+    public Beers parseBeerXml(String path) throws Exception {
+        // Встановлюємо обробник для SAX парсера
+        org.xml.sax.XMLReader reader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+        reader.setContentHandler(this);
 
-            return handler.getBeers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Починаємо парсинг
+        reader.parse(new org.xml.sax.InputSource(path));
 
-        return null;
+        // Отримуємо результат від обробника
+        return handler.getBeers();
+    }
+
+    // Перевизначені методи DefaultHandler для обробки подій SAX парсера
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        handler.handleStartElement(qName);
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        handler.handleCharacters(new String(ch, start, length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        handler.handleEndElement(qName);
     }
 }

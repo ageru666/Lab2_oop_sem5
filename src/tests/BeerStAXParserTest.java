@@ -3,6 +3,7 @@ import Parsers.BeerStAXParser;
 import Components.Beer;
 import Components.BeerChar;
 import Components.Beers;
+import Parsers.UniversalXMLHandler;
 import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.util.List;
@@ -15,8 +16,8 @@ public class BeerStAXParserTest {
     public void parseXMLTest() throws Exception {
 
         InputStream xmlInput = getClass().getResourceAsStream("/beers.xml");
-
-        BeerStAXParser staxParser = new BeerStAXParser();
+        UniversalXMLHandler universalHandler = new UniversalXMLHandler();
+        BeerStAXParser staxParser = new BeerStAXParser(universalHandler);
         Beers beers = staxParser.parse(xmlInput);
         List<Beer> beerList = beers.getBeer();
 

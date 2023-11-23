@@ -1,31 +1,39 @@
 package Parsers;
 
-import Components.Beers;
-
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-
+import Components.Beers;
 public class BeerStAXParser {
+
+    private UniversalXMLHandler handler;
+
+    public BeerStAXParser(UniversalXMLHandler handler) {
+        this.handler = handler;
+    }
 
     public Beers parse(InputStream xmlInput) throws XMLStreamException {
         XMLInputFactory factory = XMLInputFactory.newFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(xmlInput);
 
-        BeerStAXHandler staxHandler = new BeerStAXHandler();
-        return staxHandler.parseXML(reader);
-    }
+        while (reader.hasNext()) {
+            int event = reader.next();
 
-    public Beers parse(String path) throws XMLStreamException, FileNotFoundException {
-        InputStream xmlInput = new FileInputStream(path);
+            switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    handler.handleStAXStartElement(reader.getLocalName());
+                    break;
+                case XMLStreamConstants.CHARACTERS:
+                    handler.handleStAXCharacters(reader.getText());
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    handler.handleStAXEndElement(reader.getLocalName());
+                    break;
+            }
+        }
 
-        XMLInputFactory factory = XMLInputFactory.newFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(xmlInput);
-
-        BeerStAXHandler staxHandler = new BeerStAXHandler();
-        return staxHandler.parseXML(reader);
+        return handler.getBeers();
     }
 }
